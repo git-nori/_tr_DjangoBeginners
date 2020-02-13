@@ -47,11 +47,15 @@ class BoardTopicsTests(TestCase):
         self.assertEquals(view.func, board_topics)
 
     # レスポンス内にHomeへのリンクを含むか判定
-    def test_board_topics_view_contains_link_back_to_homepage(self):
+    def test_board_topics_view_contains_navigation_links(self):
         board_topics_url = reverse('board_topics', kwargs={'pk': 1})
-        response = self.client.get(board_topics_url)
         homepage_url = reverse('home')
+        new_topic_url = reverse('new_topic', kwargs={'pk': 1})
+
+        response = self.client.get(board_topics_url)
+
         self.assertContains(response, 'href="{0}"'.format(homepage_url))
+        self.assertContains(response, 'href="{0}"'.format(new_topic_url))
 
 
 class NewTopicTests(TestCase):
@@ -76,7 +80,7 @@ class NewTopicTests(TestCase):
         self.assertEquals(view.func, new_topic)
 
     # レスポンス内にboard_topicsへのリンクを含むか判定
-    def test_board_topics_view_contains_link_back_to_homepage(self):
+    def test_new_topic_view_contains_navigation_links(self):
         new_topic_url = reverse('new_topic', kwargs={'pk': 1})
         response = self.client.get(new_topic_url)
         board_topics_url = reverse('board_topics', kwargs={'pk': 1})
