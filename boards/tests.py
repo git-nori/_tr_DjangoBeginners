@@ -1,5 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse, resolve
+
+from boards.forms import NewTopicForm
 from .views import home, board_topics, new_topic
 from .models import Board, Topic, Post
 from django.contrib.auth.models import User
@@ -105,11 +107,15 @@ class NewTopicTests(TestCase):
         self.assertTrue(Topic.objects.exists())
         self.assertTrue(Post.objects.exists())
 
-    # 空のデータを送った場合、ステータスコードが200を返すか判定する
+    # 空のデータを送った場合、
+    # ステータスコードが200を返すか判定する
+    # バリデーションエラーを持っているか判定する
     def test_new_topic_invalid_post_data(self):
         url = reverse('new_topic', kwargs={'pk': 1})
         response = self.client.post(url, {})
+        form = response.context.get('form')
         self.assertEquals(response.status_code, 200)
+        self.assertTrue(form.errors)
 
     # バリデーションエラーが発生するデータ送った場合、ステータスコードが200を返すか判定する
     def test_new_topic_invalid_post_data_empty_fields(self):
@@ -121,3 +127,10 @@ class NewTopicTests(TestCase):
         response = self.client.post(url, data)
         self.assertEquals(response.status_code, 200)
         self.assertFalse(Topic.objects.exists())
+
+    # formのインスタンスが正しいか判定する
+    def test_contains_form(self):
+        url = reverse('new_topic', kwargs={'pk': 1})
+        response = self.client.get(url)
+        form = response.context.get('form')
+        self.assertIsInstance(form, NewTopicForm)
