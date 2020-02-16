@@ -9,7 +9,7 @@
         <h3 class="card-title">Log in</h3>
         <form method="post" novalidate>
           {% csrf_token %}
-          {% bootstrap_form form %}
+          {% bootstrap_form form bound_css_class=input_class %}
           <button type="submit" class="btn btn-primary btn-block">Log in</button>
         </form>
       </div>
