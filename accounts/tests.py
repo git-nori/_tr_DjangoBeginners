@@ -1,8 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse, resolve
 from .views import signup
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from .forms import SignUpForm
 
 
 class SignUpTests(TestCase):
@@ -26,7 +26,14 @@ class SignUpTests(TestCase):
     # レスポンスにフォームが含まれているか判定する
     def test_contains_form(self):
         form = self.response.context.get('form')
-        self.assertIsInstance(form, UserCreationForm)
+        self.assertIsInstance(form, SignUpForm)
+
+    # フォームのinput項目が正しく画面に表示されているか確認する
+    def test_form_inputs(self):
+        self.assertContains(self.response, '<input', 5)
+        self.assertContains(self.response, 'type="text"', 1)
+        self.assertContains(self.response, 'type="email"', 1)
+        self.assertContains(self.response, 'type="password"', 2)
 
 
 class SuccessfulSignUpTests(TestCase):
@@ -34,6 +41,7 @@ class SuccessfulSignUpTests(TestCase):
         url = reverse('signup')
         data = {
             'username': 'john',
+            'email': 'john@doe.com',
             'password1': 'abcdef123456',
             'password2': 'abcdef123456'
         }
