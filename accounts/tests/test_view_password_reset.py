@@ -67,3 +67,18 @@ class InvalidPasswordResetTests(TestCase):
     # パスワードリセットメールが送信されないか確認する
     def test_send_password_reset_email(self):
         self.assertEquals(0, len(mail.outbox))
+
+
+class PasswordResetDoneTests(TestCase):
+    def setUp(self):
+        url = reverse('password_reset_done')
+        self.response = self.client.get(url)
+
+    # ステータスコードが200を返すか判定する
+    def test_status_code(self):
+        self.assertEquals(self.response.status_code, 200)
+
+    # 正しいビューかを判定する
+    def test_view_function(self):
+        view = resolve('/reset/done/')
+        self.assertEquals(view.func.view_class, auth_views.PasswordResetDoneView)
