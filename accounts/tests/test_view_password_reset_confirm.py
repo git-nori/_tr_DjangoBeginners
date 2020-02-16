@@ -26,7 +26,7 @@ class PasswordResetConfirmTests(TestCase):
 
     # 正しいビューかを判定する
     def test_view_function(self):
-        view = resolve('/reset/{uidb64}/{token}'.format(uidb64=self.uid, token=self.token))
+        view = resolve('/reset/{uidb64}/{token}/'.format(uidb64=self.uid, token=self.token))
         self.assertEquals(view.func.view_class, auth_views.PasswordResetConfirmView)
 
     # レスポンスにcsrfトークンが含まれているか判定する
