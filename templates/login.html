@@ -9,6 +9,9 @@
         <h3 class="card-title">Log in</h3>
         <form method="post" novalidate>
           {% csrf_token %}
+
+          <!-- login後に遷移予定だったページへリダイレクトを行うための値 -->
+          <input type="hidden" name="next" value="{{ next }}">
           {% bootstrap_form form bound_css_class=input_class %}
           <button type="submit" class="btn btn-primary btn-block">Log in</button>
         </form>
