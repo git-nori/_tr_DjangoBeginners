@@ -9,8 +9,12 @@ from django.contrib.auth.models import User
 
 class NewTopicTests(TestCase):
     def setUp(self):
+        username = 'john'
+        email = 'john@doe.com'
+        password = '123'
         Board.objects.create(name='Django', description={'Django board'})
-        User.objects.create_user(username='john', email='john@doe.com', password='123')
+        User.objects.create_user(username=username, email=email, password=password)
+        self.client.login(username=username, password=password)
 
     # ステータスコードが200を返すか判定する
     def test_new_topic_view_status_code(self):
