@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block title %}Edit post{% endblock %}
 
@@ -12,7 +13,7 @@
 {% block content %}
 <form method="post" class="mb-4" novalidate>
   {% csrf_token %}
-  {% bootstrap_form form %}
+  {{ form|crispy }}
   <button type="submit" class="btn btn-success">Save changes</button>
   <a href="{% url 'topic_posts' post.topic.board.pk post.topic.pk %}" class="btn btn-outline-secondary">Cancel</a>
 </form>
