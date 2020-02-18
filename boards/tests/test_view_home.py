@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import reverse, resolve
 
 from boards.forms import NewTopicForm
-from boards.views import home, board_topics, new_topic
+from boards.views import BoardListView, board_topics, new_topic
 from boards.models import Board, Topic, Post
 from django.contrib.auth.models import User
 
@@ -20,7 +20,7 @@ class HomeTests(TestCase):
     # 正しいviewを返すか判定する
     def test_home_url_resolves_home_view(self):
         view = resolve('/')
-        self.assertEquals(view.func, home)
+        self.assertEquals(view.func.view_class, BoardListView)
 
     # レスポンス内にTopicsへのリンクを含むか判定
     def test_home_view_contains_link_to_topics_page(self):
