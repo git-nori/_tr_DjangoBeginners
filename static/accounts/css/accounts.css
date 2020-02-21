@@ -1,0 +1,12 @@
+body {
+  background-color: gray;
+}
+
+.logo a {
+  color: rgb(0,0,0,.9);
+}
+
+.logo a:hover,
+.logo a:active {
+  text-decoration: none;
+}
