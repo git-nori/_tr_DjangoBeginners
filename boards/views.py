@@ -63,8 +63,13 @@ class PostListView(ListView):
     paginate_by = 2
 
     def get_context_data(self, **kwargs):
-        self.topic.views += 1
-        self.topic.save()
+        session_key = f'viewed_topic_{self.topic.pk}'
+        if not self.request.session.get(session_key, False):
+            # セッション内にセッションキーが存在するか判定 => 同一セッション内でのアクセスか判定
+            self.topic.views += 1
+            self.topic.save()
+            self.request.session[session_key] = True  # セッションに判定値を格納
+
         kwargs['topic'] = self.topic
         return super().get_context_data(**kwargs)
 
